@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-4">
             <div class="card">
                 <div class="card-header card-primay">Create Category</div>
 
@@ -17,7 +17,7 @@
                             {{csrf_field()}}
                             <div class="form-group">
                                 <label>CategoryName</label>
-                                <input type="text" name="name" required class="form-control" autofocus>
+                                <input type="text" autocomplete="off" name="name" required class="form-control" autofocus>
                             </div>
                            <div class="form-group">
                                <input type="radio" checked id="main" name="type" value="main" onclick="toggle_select_box('main')">
@@ -40,37 +40,35 @@
                 </div>
             </div>
         </div>
-    </div>
-    <br><br><br>
-    <div class="row justify-content-center">
         <div class="col-md-8 jumbotron">
             <div class="card card-primay">
                 <div class="card-header">
                     All Category
                 </div>
                 <div class="card-body" id="show_category">
-                    {{--<ul id="level0">--}}
-                        {{--<li>AAAA--}}
-                        {{--<ul id="level1">--}}
-                            {{--<li>1111</li>--}}
-                            {{--<li>1111</li>--}}
-                            {{--<ul id="level2">--}}
-                                {{--<li>aaaa</li>--}}
-                                {{--<li>aaaa</li>--}}
-                                {{--<li>aaaa</li>--}}
-                            {{--</ul>--}}
-                        {{--</ul>--}}
-                        {{--</li>--}}
-                        {{--<li>AAAA</li>--}}
-                        {{--<li>AAAA</li>--}}
-                        {{--<li>AAAA</li>--}}
+                    {{--<ul>--}}
+                    {{--<li>AAAA--}}
+                    {{--<ul id="level1">--}}
+                    {{--<li>1111</li>--}}
+                    {{--<li>1111--}}
+                    {{--<ul id="level2">--}}
+                    {{--<li>aaaa</li>--}}
+                    {{--<li>aaaa</li>--}}
+                    {{--<li>aaaa</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li>AAAA</li>--}}
+                    {{--<li>AAAA</li>--}}
+                    {{--<li>AAAA</li>--}}
                     {{--</ul>--}}
 
                 </div>
             </div>
         </div>
-
     </div>
+
 </div>
 
 @endsection
@@ -139,7 +137,22 @@
 
         let presentation_data=(category)=>{
             let show_category=document.getElementById('show_category');
-            show_category.innerHTML+="level "+category.level+" => "+category.id+":"+category.name+"<br>";
+            let ul=document.createElement("ul");
+            let li=document.createElement("li");
+            //if first time, create element
+            if(category.level===0){
+                li.innerHTML=category.name;
+                li.id=category.id;
+                ul.appendChild(li);
+                show_category.appendChild(ul);
+            }
+            //else add to already element
+            else{
+                let parent_li=document.getElementById(category.parent_id);
+                parent_li.innerHTML+="<ul><li id='"+category.id+"'>"+category.name+"</li><ul>";
+            }
+
+//            show_category.innerHTML+="level "+category.level+" => "+category.id+":"+category.name+"<br>";
         };
 
         let toggle_select_box=(type)=>{
